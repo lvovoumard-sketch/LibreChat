@@ -7,7 +7,10 @@ import type { UseFormReturn } from 'react-hook-form';
 import type { AgentForm } from '~/common';
 import AgentSelect from '../AgentSelect';
 
-const mockListAgents = jest.fn<{ data: { id: string; name: string }[] }, unknown[]>(() => ({
+const mockListAgents = jest.fn<
+  { data: { id: string; name: string }[]; isComplete?: boolean }, // COVERSEAL: tri alphabétique
+  unknown[]
+>(() => ({
   data: [],
 }));
 
@@ -170,6 +173,11 @@ describe('AgentSelect resetAgentForm', () => {
 });
 
 describe('AgentSelect ownership filter', () => {
+  afterEach(() => {
+    mockListAgents.mockReset(); // COVERSEAL: tri alphabétique
+    mockListAgents.mockImplementation(() => ({ data: [] })); // COVERSEAL: tri alphabétique
+  });
+
   it('renders an icon-only quiet filter with an accessible name', () => {
     render(<Harness agent={createAgent()} onMethods={() => undefined} />);
     const toggle = screen.getByRole('button', { name: 'com_agents_my_agents' });
@@ -208,6 +216,41 @@ describe('AgentSelect ownership filter', () => {
     fireEvent.click(toggle);
     fireEvent.click(toggle);
     expect(mockListAgents).toHaveBeenLastCalledWith({ requiredPermission: 1 }, expect.any(Object));
+  });
+
+  it('sorts the loaded catalog by name, with an empty name last', () => {
+    mockListAgents.mockReturnValue({
+      isComplete: true, // COVERSEAL: tri alphabétique
+      data: [
+        { id: 'z', name: 'Zèbre' }, // COVERSEAL: tri alphabétique
+        { id: 'empty', name: '' }, // COVERSEAL: tri alphabétique
+        { id: 'e10', name: 'école 10' }, // COVERSEAL: tri alphabétique
+        { id: 'e2', name: 'Ecole 2' }, // COVERSEAL: tri alphabétique
+      ],
+    });
+    render(<Harness agent={createAgent()} onMethods={() => undefined} />);
+    const labels = Array.from(
+      screen.getByTestId('agent-select-combobox').querySelectorAll('span'),
+      (node) => node.textContent,
+    );
+    // COVERSEAL: tri alphabétique
+    expect(labels).toEqual(['Ecole 2', 'école 10', 'Zèbre', 'empty']);
+  });
+
+  it('keeps server order until every page has loaded', () => {
+    mockListAgents.mockReturnValue({
+      isComplete: false, // COVERSEAL: tri alphabétique
+      data: [
+        { id: 'b', name: 'Bravo' }, // COVERSEAL: tri alphabétique
+        { id: 'a', name: 'Alpha' }, // COVERSEAL: tri alphabétique
+      ],
+    });
+    render(<Harness agent={createAgent()} onMethods={() => undefined} />);
+    const labels = Array.from(
+      screen.getByTestId('agent-select-combobox').querySelectorAll('span'),
+      (node) => node.textContent,
+    );
+    expect(labels).toEqual(['Bravo', 'Alpha']); // COVERSEAL: tri alphabétique
   });
 
   it('keeps the current agent available when absent from the filtered list', () => {

@@ -24,6 +24,25 @@ const keys = new Set(Object.keys(defaultAgentFormValues));
  * agents past the cut. */
 const SELECTOR_MAX_HEIGHT = 480;
 
+// COVERSEAL: tri alphabétique — nom vide en dernier, sans casse ni accents.
+function compareAgentNames(aName?: string | null, bName?: string | null): number {
+  const left = aName ?? ''; // COVERSEAL: tri alphabétique
+  const right = bName ?? ''; // COVERSEAL: tri alphabétique
+  if (left === '' && right === '') {
+    return 0; // COVERSEAL: tri alphabétique
+  }
+  if (left === '') {
+    return 1; // COVERSEAL: tri alphabétique
+  }
+  if (right === '') {
+    return -1; // COVERSEAL: tri alphabétique
+  }
+  return left.localeCompare(right, 'fr', {
+    sensitivity: 'base', // COVERSEAL: tri alphabétique
+    numeric: true, // COVERSEAL: tri alphabétique
+  });
+}
+
 function AgentSelect({
   agentQuery,
   selectedAgentId = null,
@@ -62,16 +81,16 @@ function AgentSelect({
   const { data: startupConfig } = useGetStartupConfig();
   const selectorLimit = normalizeAgentSelectorLimit(startupConfig?.interface?.agentSelectorLimit);
 
-  const { data: listedAgents = null } = useListAgentsQuery(
+  const {
+    data: listedAgents = null,
+    isComplete, // COVERSEAL: tri alphabétique
+  } = useListAgentsQuery(
     { requiredPermission: permissionLevel, ...(mine ? { mine: 1 as const } : {}) },
     {
       select: (res) =>
         res.data.map((agent) =>
           processAgentOption({
-            agent: {
-              ...agent,
-              name: agent.name || agent.id,
-            },
+            agent, // COVERSEAL: tri alphabétique
           }),
         ),
     },
@@ -79,21 +98,31 @@ function AgentSelect({
 
   const agents = useMemo(() => {
     const currentAgent = agentQuery.data;
-    if (
+    const merged =
       !mine ||
       !currentAgent ||
       currentAgent.id !== selectedAgentId ||
       listedAgents?.some((agent) => agent.id === selectedAgentId)
-    ) {
-      return listedAgents;
+        ? listedAgents
+        : [
+            ...(listedAgents ?? []),
+            processAgentOption({
+              agent: currentAgent, // COVERSEAL: tri alphabétique
+            }),
+          ];
+    // COVERSEAL: tri alphabétique
+    if (merged == null || isComplete !== true) {
+      return merged; // COVERSEAL: tri alphabétique
     }
-    return [
-      ...(listedAgents ?? []),
-      processAgentOption({
-        agent: { ...currentAgent, name: currentAgent.name || currentAgent.id },
-      }),
-    ];
-  }, [listedAgents, mine, agentQuery.data, selectedAgentId]);
+    // COVERSEAL: tri alphabétique
+    return [...merged].sort((a, b) => compareAgentNames(a.name, b.name));
+  }, [
+    listedAgents,
+    mine,
+    agentQuery.data,
+    selectedAgentId,
+    isComplete, // COVERSEAL: tri alphabétique
+  ]);
 
   const resetAgentForm = useCallback(
     (fullAgent: Agent, preserveDirtyValues = false) => {
@@ -338,7 +367,7 @@ function AgentSelect({
           setValue={onSelect}
           items={
             agents?.map((agent) => ({
-              label: agent.name ?? '',
+              label: agent.name || agent.id || '', // COVERSEAL: tri alphabétique
               value: agent.id ?? '',
               icon: agent.icon,
             })) ?? [
