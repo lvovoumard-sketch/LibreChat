@@ -10,20 +10,20 @@
  * must exclude `.dark`: it is `!important`, and a selector that also matches
  * `html.dark` keeps the light palette wherever the dark rule does not win.
  */
-@import '@fontsource/archivo/400.css';
-@import '@fontsource/archivo/400-italic.css';
-@import '@fontsource/archivo/500.css';
-@import '@fontsource/archivo/600.css';
-@import '@fontsource/archivo/700.css';
-@import '@fontsource/libre-baskerville/400.css';
-@import '@fontsource/libre-baskerville/700.css';
+@import '@fontsource-variable/lexend';
+
+/* One line each. Titles follow the UI face until this variable is pointed elsewhere. */
+html:not(.high-contrast) {
+  --cs-font-ui: 'Lexend Variable', 'Lexend', sans-serif;
+  --cs-font-titles: var(--cs-font-ui);
+  --theme-font-family: var(--cs-font-ui) !important;
+  --theme-display-font-family: var(--cs-font-titles) !important;
+  --theme-dialog-title-font-family: var(--cs-font-titles) !important;
+  font-family: var(--cs-font-ui);
+}
 
 html:not(.dark):not(.high-contrast) {
   /* COVERSEAL: DA */
-  --theme-font-family: 'Archivo', sans-serif !important;
-  --theme-display-font-family: 'Libre Baskerville', Georgia, serif !important;
-  --theme-dialog-title-font-family: 'Libre Baskerville', Georgia, serif !important;
-  font-family: 'Archivo', sans-serif;
   color-scheme: light;
 
   /* Charter: ink, cream, sand, brick. */
@@ -159,10 +159,6 @@ html:not(.dark):not(.high-contrast) {
 
 html.dark:not(.high-contrast) {
   /* COVERSEAL: DA — page is charter ink; surfaces step toward cream, same warm hue. */
-  --theme-font-family: 'Archivo', sans-serif !important;
-  --theme-display-font-family: 'Libre Baskerville', Georgia, serif !important;
-  --theme-dialog-title-font-family: 'Libre Baskerville', Georgia, serif !important;
-  font-family: 'Archivo', sans-serif;
   color-scheme: dark;
   --text-primary: 251 249 247 !important;
   --badge-label: 251 249 247 !important;
@@ -293,8 +289,8 @@ html.dark:not(.high-contrast) {
 }
 
 /* COVERSEAL: DA — titles only. .split-parent is the welcome title. Code inside a title stays mono. */
-html:not(.high-contrast) :is(h1, h2, h3, .split-parent) {
-  font-family: 'Libre Baskerville', Georgia, serif;
+html:not(.high-contrast) :is(h1, h2, h3, .split-parent, .font-display, .font-theme-dialog-title) {
+  font-family: var(--cs-font-titles);
 }
 
 html:not(.high-contrast) :is(h1, h2, h3) :is(code, kbd, samp, pre) {
