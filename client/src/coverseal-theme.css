@@ -4,6 +4,11 @@
  * wins. High contrast is excluded. Values are bare R G B triplets, the form
  * tokens.css wraps in rgb(). The six charter colors are unchanged; every other
  * number below is a derived shade checked for WCAG AA.
+ *
+ * Dark mode is the class `dark` on <html> (ThemeProvider and the boot script;
+ * `system` adds `dark` or `light` from prefers-color-scheme). The light rule
+ * must exclude `.dark`: it is `!important`, and a selector that also matches
+ * `html.dark` keeps the light palette wherever the dark rule does not win.
  */
 @import '@fontsource/archivo/400.css';
 @import '@fontsource/archivo/400-italic.css';
@@ -13,12 +18,13 @@
 @import '@fontsource/libre-baskerville/400.css';
 @import '@fontsource/libre-baskerville/700.css';
 
-html:not(.high-contrast) {
+html:not(.dark):not(.high-contrast) {
   /* COVERSEAL: DA */
   --theme-font-family: 'Archivo', sans-serif !important;
   --theme-display-font-family: 'Libre Baskerville', Georgia, serif !important;
   --theme-dialog-title-font-family: 'Libre Baskerville', Georgia, serif !important;
   font-family: 'Archivo', sans-serif;
+  color-scheme: light;
 
   /* Charter: ink, cream, sand, brick. */
   --text-primary: 29 29 27 !important;
@@ -153,6 +159,11 @@ html:not(.high-contrast) {
 
 html.dark:not(.high-contrast) {
   /* COVERSEAL: DA — page is charter ink; surfaces step toward cream, same warm hue. */
+  --theme-font-family: 'Archivo', sans-serif !important;
+  --theme-display-font-family: 'Libre Baskerville', Georgia, serif !important;
+  --theme-dialog-title-font-family: 'Libre Baskerville', Georgia, serif !important;
+  font-family: 'Archivo', sans-serif;
+  color-scheme: dark;
   --text-primary: 251 249 247 !important;
   --badge-label: 251 249 247 !important;
   --dialog-title: 251 249 247 !important;
