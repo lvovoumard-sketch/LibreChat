@@ -1,0 +1,291 @@
+/* COVERSEAL: DA
+ * Coverseal palette, loaded after the stock styles. ThemeProvider writes the same
+ * variables inline on <html>, so each override is !important or the stock theme
+ * wins. High contrast is excluded. Values are bare R G B triplets, the form
+ * tokens.css wraps in rgb(). The six charter colors are unchanged; every other
+ * number below is a derived shade checked for WCAG AA.
+ */
+@import '@fontsource/archivo/400.css';
+@import '@fontsource/archivo/400-italic.css';
+@import '@fontsource/archivo/500.css';
+@import '@fontsource/archivo/600.css';
+@import '@fontsource/archivo/700.css';
+@import '@fontsource/libre-baskerville/400.css';
+@import '@fontsource/libre-baskerville/700.css';
+
+html:not(.high-contrast) {
+  /* COVERSEAL: DA */
+  --theme-font-family: 'Archivo', sans-serif !important;
+  --theme-display-font-family: 'Libre Baskerville', Georgia, serif !important;
+  --theme-dialog-title-font-family: 'Libre Baskerville', Georgia, serif !important;
+  font-family: 'Archivo', sans-serif;
+
+  /* Charter: ink, cream, sand, brick. */
+  --text-primary: 29 29 27 !important;
+  --badge-label: 29 29 27 !important;
+  --dialog-title: 29 29 27 !important;
+  --field-text: 29 29 27 !important;
+  --text-tooltip: 29 29 27 !important;
+  --avatar-text: 29 29 27 !important;
+  --shimmer-base: 29 29 27 !important;
+  --button-neutral-text: 29 29 27 !important;
+  --text-fixed: 29 29 27 !important;
+
+  /* Derived from slate #646D74: the charter ink is 3.62:1 on sand. */
+  --text-secondary: 86 93 98 !important;
+  --text-secondary-alt: 86 93 98 !important;
+  /* Derived from taupe #999186: the charter ink is 2.96:1 on cream. */
+  --text-tertiary: 96 92 85 !important;
+  --text-muted: 96 92 85 !important;
+  --text-disabled: 96 92 85 !important;
+  --shimmer-dip: 96 92 85 !important;
+
+  --link: 127 53 26 !important;
+  --link-hover: 110 46 23 !important;
+  --link-visited: 102 42 21 !important;
+  --link-prose: 127 53 26 !important;
+  --link-inline: 127 53 26 !important;
+  --accent-primary: 127 53 26 !important;
+  --accent-primary-hover: 110 46 23 !important;
+  --brand-purple: 127 53 26 !important;
+  --illustration: 127 53 26 !important;
+  --illustration-strong: 110 46 23 !important;
+  --illustration-subtle: 200 178 163 !important;
+  --ring-primary: 127 53 26 !important;
+  --focus-outline: 127 53 26 !important;
+  --focus-control: 127 53 26 !important;
+  --focus-subtle: 127 53 26 !important;
+  --border-field-focus: 127 53 26 !important;
+
+  --surface-primary: 251 249 247 !important;
+  --page-canvas: 251 249 247 !important;
+  --header-primary: 251 249 247 !important;
+  --surface-chat: 251 249 247 !important;
+  --surface-composer: 251 249 247 !important;
+  --surface-dialog: 251 249 247 !important;
+  --surface-menu: 251 249 247 !important;
+  --surface-popover: 251 249 247 !important;
+  --presentation: 251 249 247 !important;
+  --field-fill: 251 249 247 !important;
+  --checkbox-fill: 251 249 247 !important;
+  --surface-tooltip: 251 249 247 !important;
+  --surface-tertiary-alt: 251 249 247 !important;
+  --surface-code-body: 251 249 247 !important;
+  --chart-widget-surface: 251 249 247 !important;
+  --surface-fixed: 251 249 247 !important;
+  --select-fill: 251 249 247 !important;
+
+  --surface-primary-alt: 220 213 201 !important;
+  --surface-primary-contrast: 220 213 201 !important;
+  --surface-secondary: 220 213 201 !important;
+  --surface-sidebar: 220 213 201 !important;
+  --surface-card: 220 213 201 !important;
+  --surface-search: 220 213 201 !important;
+  --surface-canvas: 220 213 201 !important;
+  --surface-code: 220 213 201 !important;
+  --surface-code-inline: 220 213 201 !important;
+  --surface-hover: 220 213 201 !important;
+  --surface-nav-hover: 220 213 201 !important;
+  --header-hover: 220 213 201 !important;
+  --header-button-hover: 220 213 201 !important;
+  --surface-tertiary: 220 213 201 !important;
+  --surface-user-message: 220 213 201 !important;
+  --surface-disabled: 220 213 201 !important;
+  --button-neutral-hover: 220 213 201 !important;
+  --surface-fixed-hover: 220 213 201 !important;
+
+  /* Sand mixed toward brick, so a selection reads as the accent. Ink on it is 8.32:1. */
+  --surface-active: 200 178 163 !important;
+  --surface-active-alt: 200 178 163 !important;
+  --surface-nav-selected: 200 178 163 !important;
+  --surface-tab-selected: 200 178 163 !important;
+  --surface-pressed: 200 178 163 !important;
+  --surface-hover-alt: 200 178 163 !important;
+  --surface-card-hover: 200 178 163 !important;
+  --surface-secondary-alt: 200 178 163 !important;
+  --surface-composer-hover: 200 178 163 !important;
+
+  /* Sand mixed toward ink: sand itself is 1.39:1 on cream, too faint for a 1px edge. */
+  --border-light: 121 117 111 !important;
+  --border-medium: 121 117 111 !important;
+  --border-medium-alt: 121 117 111 !important;
+  --border-control: 121 117 111 !important;
+  --border-menu: 121 117 111 !important;
+  --border-disabled: 121 117 111 !important;
+  --drawer-edge: 121 117 111 !important;
+  --chart-widget-stroke: 121 117 111 !important;
+  --select-edge: 121 117 111 !important;
+  --button-neutral-border: 121 117 111 !important;
+  --prose-bullet: 121 117 111 !important;
+  --border-heavy: 86 93 98 !important;
+  --border-xheavy: 29 29 27 !important;
+  --prose-quote-bar: 127 53 26 !important;
+
+  --button-primary: 127 53 26 !important;
+  --button-primary-hover: 110 46 23 !important;
+  --surface-inverted: 127 53 26 !important;
+  --surface-inverted-hover: 110 46 23 !important;
+  --surface-inverted-pressed: 102 42 21 !important;
+  --surface-submit: 127 53 26 !important;
+  --surface-submit-hover: 110 46 23 !important;
+  --text-inverted: 251 249 247 !important;
+  --text-on-status: 251 249 247 !important;
+  --avatar-fill: 127 53 26 !important;
+  --avatar-text: 251 249 247 !important;
+  --avatar-edge: 220 213 201 !important;
+  --switch-unchecked: 121 117 111 !important;
+  --switch-thumb: 251 249 247 !important;
+  --toast-edge: 121 117 111 !important;
+
+  --surface-overlay: 29 29 27 !important;
+  --scrollbar-thumb: 29 29 27 !important;
+  --stroke-ink: 29 29 27 !important;
+
+  --syntax-text: 29 29 27 !important;
+  --syntax-comment: 96 92 85 !important;
+  --syntax-meta: 86 93 98 !important;
+  --syntax-keyword: 127 53 26 !important;
+  --syntax-title: 110 46 23 !important;
+  --syntax-string: 86 93 98 !important;
+  --syntax-builtin: 110 46 23 !important;
+  --syntax-attr: 96 92 85 !important;
+}
+
+html.dark:not(.high-contrast) {
+  /* COVERSEAL: DA — page is charter ink; surfaces step toward cream, same warm hue. */
+  --text-primary: 251 249 247 !important;
+  --badge-label: 251 249 247 !important;
+  --dialog-title: 251 249 247 !important;
+  --field-text: 251 249 247 !important;
+  --text-tooltip: 251 249 247 !important;
+  --avatar-text: 251 249 247 !important;
+  --shimmer-base: 251 249 247 !important;
+  --button-neutral-text: 251 249 247 !important;
+  --text-fixed: 251 249 247 !important;
+  /* Taupe lifted toward cream: charter taupe is 4.31:1 on the card surface. */
+  --text-secondary: 166 159 149 !important;
+  --text-secondary-alt: 166 159 149 !important;
+  --text-tertiary: 166 159 149 !important;
+  --text-muted: 166 159 149 !important;
+  --text-disabled: 166 159 149 !important;
+  --shimmer-dip: 166 159 149 !important;
+
+  /* Brick at lightness 65, hue 16. Charter brick is 1.95:1 on the dark page. */
+  --link: 225 138 107 !important;
+  --link-hover: 234 153 123 !important;
+  --link-visited: 234 153 123 !important;
+  --link-prose: 225 138 107 !important;
+  --link-inline: 225 138 107 !important;
+  --accent-primary: 225 138 107 !important;
+  --accent-primary-hover: 234 153 123 !important;
+  --brand-purple: 225 138 107 !important;
+  --illustration: 225 138 107 !important;
+  --illustration-strong: 234 153 123 !important;
+  --illustration-subtle: 144 60 29 !important;
+  --ring-primary: 225 138 107 !important;
+  --focus-outline: 225 138 107 !important;
+  --focus-control: 225 138 107 !important;
+  --focus-subtle: 225 138 107 !important;
+  --border-field-focus: 225 138 107 !important;
+
+  --surface-primary: 29 29 27 !important;
+  --page-canvas: 29 29 27 !important;
+  --header-primary: 29 29 27 !important;
+  --surface-chat: 29 29 27 !important;
+  --field-fill: 29 29 27 !important;
+  --checkbox-fill: 29 29 27 !important;
+  --select-fill: 29 29 27 !important;
+  --surface-fixed: 29 29 27 !important;
+
+  --surface-primary-alt: 42 42 40 !important;
+  --surface-sidebar: 42 42 40 !important;
+  --surface-canvas: 42 42 40 !important;
+  --surface-dialog: 42 42 40 !important;
+  --surface-composer: 42 42 40 !important;
+  --surface-code-body: 42 42 40 !important;
+  --surface-tooltip: 42 42 40 !important;
+  --presentation: 42 42 40 !important;
+
+  --surface-secondary: 47 47 45 !important;
+  --surface-card: 47 47 45 !important;
+  --surface-search: 47 47 45 !important;
+  --surface-code: 47 47 45 !important;
+  --surface-menu: 47 47 45 !important;
+  --surface-popover: 47 47 45 !important;
+  --surface-disabled: 47 47 45 !important;
+  --surface-primary-contrast: 47 47 45 !important;
+  --chart-widget-surface: 47 47 45 !important;
+  --surface-fixed-hover: 47 47 45 !important;
+
+  --surface-hover: 51 51 49 !important;
+  --surface-nav-hover: 51 51 49 !important;
+  --header-hover: 51 51 49 !important;
+  --header-button-hover: 51 51 49 !important;
+  --surface-composer-hover: 51 51 49 !important;
+  --surface-tertiary: 51 51 49 !important;
+  --surface-user-message: 51 51 49 !important;
+  --surface-secondary-alt: 51 51 49 !important;
+  --button-neutral-hover: 51 51 49 !important;
+
+  /* Nav and tabs carry cream text, which clears charter brick. Inline highlights stay a step. */
+  --surface-active: 56 55 53 !important;
+  --surface-active-alt: 56 55 53 !important;
+  --surface-nav-selected: 127 53 26 !important;
+  --surface-tab-selected: 127 53 26 !important;
+  --surface-pressed: 56 55 53 !important;
+  --surface-hover-alt: 56 55 53 !important;
+  --surface-card-hover: 56 55 53 !important;
+  --surface-tertiary-alt: 56 55 53 !important;
+  --surface-code-inline: 56 55 53 !important;
+
+  --border-light: 136 135 133 !important;
+  --border-medium: 136 135 133 !important;
+  --border-medium-alt: 136 135 133 !important;
+  --border-control: 136 135 133 !important;
+  --border-menu: 136 135 133 !important;
+  --border-disabled: 136 135 133 !important;
+  --drawer-edge: 136 135 133 !important;
+  --chart-widget-stroke: 136 135 133 !important;
+  --select-edge: 136 135 133 !important;
+  --button-neutral-border: 136 135 133 !important;
+  --prose-bullet: 136 135 133 !important;
+  --border-heavy: 166 159 149 !important;
+  --border-xheavy: 166 159 149 !important;
+  --prose-quote-bar: 225 138 107 !important;
+
+  /* Button fills stay charter brick. Hover is a lighter brick; the label stays cream. */
+  --button-primary: 127 53 26 !important;
+  --button-primary-hover: 144 60 29 !important;
+  --surface-inverted: 127 53 26 !important;
+  --surface-inverted-hover: 144 60 29 !important;
+  --surface-inverted-pressed: 144 60 29 !important;
+  --surface-submit: 127 53 26 !important;
+  --surface-submit-hover: 144 60 29 !important;
+  --text-inverted: 251 249 247 !important;
+  --text-on-status: 251 249 247 !important;
+  --avatar-edge: 136 135 133 !important;
+  --switch-unchecked: 136 135 133 !important;
+  --toast-edge: 136 135 133 !important;
+
+  --surface-overlay: 29 29 27 !important;
+  --scrollbar-thumb: 251 249 247 !important;
+  --stroke-ink: 251 249 247 !important;
+
+  --syntax-text: 251 249 247 !important;
+  --syntax-comment: 166 159 149 !important;
+  --syntax-meta: 166 159 149 !important;
+  --syntax-keyword: 225 138 107 !important;
+  --syntax-title: 234 153 123 !important;
+  --syntax-string: 220 213 201 !important;
+  --syntax-builtin: 234 153 123 !important;
+  --syntax-attr: 225 138 107 !important;
+}
+
+/* COVERSEAL: DA — titles only. .split-parent is the welcome title. Code inside a title stays mono. */
+html:not(.high-contrast) :is(h1, h2, h3, .split-parent) {
+  font-family: 'Libre Baskerville', Georgia, serif;
+}
+
+html:not(.high-contrast) :is(h1, h2, h3) :is(code, kbd, samp, pre) {
+  font-family: var(--theme-mono-font-family);
+}

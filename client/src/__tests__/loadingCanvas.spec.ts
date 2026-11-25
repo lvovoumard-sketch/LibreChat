@@ -42,8 +42,8 @@ describe('loading canvas', () => {
   it.each([
     ['high-contrast-dark', [], '#000000'],
     ['high-contrast-light', [], '#ffffff'],
-    ['dark', [], '#0d0d0d'],
-    ['light', [], '#ffffff'],
+    ['dark', [], '#1D1D1B'], // COVERSEAL: DA
+    ['light', [], '#FBF9F7'], // COVERSEAL: DA
   ])('paints the stored %s mode', (stored, matching, expected) => {
     expect(canvasFor(stored, matching as string[])).toBe(expected);
   });
@@ -53,9 +53,9 @@ describe('loading canvas', () => {
    *  for the whole application load. */
   it('follows both OS preferences under system', () => {
     expect(canvasFor('system', [DARK_SCHEME, MORE_CONTRAST])).toBe('#000000');
-    expect(canvasFor('system', [DARK_SCHEME])).toBe('#0d0d0d');
+    expect(canvasFor('system', [DARK_SCHEME])).toBe('#1D1D1B'); // COVERSEAL: DA
     expect(canvasFor('system', [MORE_CONTRAST])).toBe('#ffffff');
-    expect(canvasFor('system', [])).toBe('#ffffff');
+    expect(canvasFor('system', [])).toBe('#FBF9F7'); // COVERSEAL: DA
   });
 
   /** A Windows Contrast Theme reports `forced-colors: active` with
@@ -69,7 +69,7 @@ describe('loading canvas', () => {
   /** An unset or unrecognised value is what `getInitialTheme` resolves as
    *  `system`, so the canvas has to resolve it the same way. */
   it('treats an unset or unknown mode as system', () => {
-    expect(canvasFor(null, [DARK_SCHEME])).toBe('#0d0d0d');
+    expect(canvasFor(null, [DARK_SCHEME])).toBe('#1D1D1B'); // COVERSEAL: DA
     expect(canvasFor(null, [DARK_SCHEME, MORE_CONTRAST])).toBe('#000000');
     expect(canvasFor('sepia', [DARK_SCHEME, MORE_CONTRAST])).toBe('#000000');
   });

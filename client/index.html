@@ -153,7 +153,14 @@
             return window.matchMedia(query).matches;
           });
         }
-        let backgroundColor = dark ? (contrast ? '#000000' : '#0d0d0d') : '#ffffff';
+        /* COVERSEAL: DA — cream page, ink page. High contrast keeps black and white. */
+        let backgroundColor = dark
+          ? contrast
+            ? '#000000'
+            : '#1D1D1B'
+          : contrast
+            ? '#ffffff'
+            : '#FBF9F7';
         const root = document.documentElement;
         root.classList.add(dark ? 'dark' : 'light');
 

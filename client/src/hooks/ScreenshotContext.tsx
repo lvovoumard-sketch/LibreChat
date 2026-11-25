@@ -72,7 +72,7 @@ export const useScreenshot = () => {
      *  an export matches the selected appearance and the state colours keep the
      *  contrast they were calibrated against. The token is a channel triplet,
      *  not a colour, so it has to be wrapped before html-to-image sees it. */
-    const fallbackBackground = isDark(theme) ? '#171717' : 'white';
+    const fallbackBackground = isDark(theme) ? '#1D1D1B' : '#FBF9F7'; /* COVERSEAL: DA */
     const backgroundColor = readThemeColor('--surface-primary') ?? fallbackBackground;
     const canvas = await toCanvas(node, {
       backgroundColor,

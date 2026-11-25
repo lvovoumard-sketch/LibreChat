@@ -168,7 +168,7 @@ describe('index.html deployment theme boot script', () => {
     expect(root().getAttribute('style')).toBeNull();
     expect(root().hasAttribute('data-theme')).toBe(false);
     expect(root().hasAttribute('data-theme-boot')).toBe(false);
-    expect(document.head.textContent).toContain('background-color: #ffffff');
+    expect(document.head.textContent).toContain('background-color: #FBF9F7') /* COVERSEAL: DA */;
   });
 
   it.each([
@@ -180,7 +180,7 @@ describe('index.html deployment theme boot script', () => {
     expect(root().getAttribute('style')).toBeNull();
     expect(root().hasAttribute('data-theme')).toBe(false);
     expect(root().hasAttribute('data-theme-boot')).toBe(false);
-    expect(document.head.textContent).toContain('background-color: #ffffff');
+    expect(document.head.textContent).toContain('background-color: #FBF9F7') /* COVERSEAL: DA */;
   });
 
   it('paints no cached theme when the live session belongs to someone who signed in since', () => {
@@ -189,7 +189,7 @@ describe('index.html deployment theme boot script', () => {
     expect(root().getAttribute('style')).toBeNull();
     expect(root().hasAttribute('data-theme')).toBe(false);
     expect(root().hasAttribute('data-theme-boot')).toBe(false);
-    expect(document.head.textContent).toContain('background-color: #ffffff');
+    expect(document.head.textContent).toContain('background-color: #FBF9F7') /* COVERSEAL: DA */;
   });
 
   it('paints no cached theme that names no owner', () => {
@@ -298,7 +298,7 @@ describe('index.html deployment theme boot script', () => {
       localStorage.setItem('color-theme', 'dark');
       boot();
       expect(root().getAttribute('style')).toBeNull();
-      expect(document.head.textContent).toContain('background-color: #0d0d0d');
+      expect(document.head.textContent).toContain('background-color: #1D1D1B') /* COVERSEAL: DA */;
     });
   });
 
@@ -349,7 +349,7 @@ describe('index.html deployment theme boot script', () => {
     );
     writeThemeCache(entry);
     boot();
-    expect(document.head.textContent).toContain('background-color: #0d0d0d');
+    expect(document.head.textContent).toContain('background-color: #1D1D1B') /* COVERSEAL: DA */;
     expect(document.head.textContent).not.toContain('</style>');
   });
 
@@ -429,7 +429,7 @@ describe('index.html deployment theme boot script', () => {
     localStorage.setItem('deployment-theme', '{not json');
     boot();
     expect(root().getAttribute('style')).toBeNull();
-    expect(document.head.textContent).toContain('background-color: #0d0d0d');
+    expect(document.head.textContent).toContain('background-color: #1D1D1B') /* COVERSEAL: DA */;
   });
 
   it('is dropped by the provider, so a withdrawn theme restores the stylesheet, not the copy', () => {

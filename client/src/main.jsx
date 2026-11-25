@@ -6,6 +6,7 @@ import App from './App';
 import '@librechat/client/style.css';
 import './style.css';
 import './mobile.css';
+import './coverseal-theme.css'; /* COVERSEAL: DA */
 import { ApiErrorBoundaryProvider } from './hooks/ApiErrorBoundaryContext';
 import { clearTTSCache } from './utils/ttscache';
 

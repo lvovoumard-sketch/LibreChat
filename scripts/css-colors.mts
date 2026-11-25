@@ -22,6 +22,7 @@ export const CSS_ROOTS = ['client/src', 'packages/client/src', 'packages/chat/sr
 export const CSS_COLOR_ALLOWED_FILES = [
   'packages/client/src/theme/defaults.css',
   'packages/client/src/theme/tokens.css',
+  'client/src/coverseal-theme.css', // COVERSEAL: DA
 ];
 
 /** Rules that may hold a literal in an otherwise checked file: the Azure brand gradient (entry 2) and the select arrow's inline SVG (entry 9). */

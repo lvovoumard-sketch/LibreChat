@@ -34,6 +34,8 @@
     "@codesandbox/sandpack-react": "^2.19.10",
     "@dicebear/collection": "^9.4.3",
     "@dicebear/core": "^9.4.3",
+    "@fontsource/archivo": "^5.3.0",
+    "@fontsource/libre-baskerville": "^5.3.0",
     "@headlessui/react": "^2.1.2",
     "@hyperdx/otel-web": "0.18.0",
     "@hyperdx/otel-web-session-recorder": "2.0.0",
