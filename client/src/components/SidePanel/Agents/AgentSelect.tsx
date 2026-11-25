@@ -11,7 +11,13 @@ import {
 import type { Agent, AgentCreateParams, StatefulCodeEnvironment } from 'librechat-data-provider';
 import type { UseMutationResult, QueryObserverResult } from '@tanstack/react-query';
 import type { TAgentCapabilities, AgentForm } from '~/common';
-import { cn, createProviderOption, processAgentOption, getDefaultAgentFormValues } from '~/utils';
+import {
+  cn,
+  createProviderOption,
+  processAgentOption,
+  sortAgentsByName, // COVERSEAL: tri alphabétique
+  getDefaultAgentFormValues,
+} from '~/utils';
 import { useListAgentsQuery, useGetStartupConfig } from '~/data-provider';
 import { useLocalize, useAgentDefaultPermissionLevel } from '~/hooks';
 import MineFilterToggle from '~/components/Agents/MineFilterToggle';
@@ -23,25 +29,6 @@ const keys = new Set(Object.keys(defaultAgentFormValues));
  * `interface.agentSelectorLimit` (default 10), and the search field covers
  * agents past the cut. */
 const SELECTOR_MAX_HEIGHT = 480;
-
-// COVERSEAL: tri alphabétique — nom vide en dernier, sans casse ni accents.
-function compareAgentNames(aName?: string | null, bName?: string | null): number {
-  const left = aName ?? ''; // COVERSEAL: tri alphabétique
-  const right = bName ?? ''; // COVERSEAL: tri alphabétique
-  if (left === '' && right === '') {
-    return 0; // COVERSEAL: tri alphabétique
-  }
-  if (left === '') {
-    return 1; // COVERSEAL: tri alphabétique
-  }
-  if (right === '') {
-    return -1; // COVERSEAL: tri alphabétique
-  }
-  return left.localeCompare(right, 'fr', {
-    sensitivity: 'base', // COVERSEAL: tri alphabétique
-    numeric: true, // COVERSEAL: tri alphabétique
-  });
-}
 
 function AgentSelect({
   agentQuery,
@@ -115,7 +102,7 @@ function AgentSelect({
       return merged; // COVERSEAL: tri alphabétique
     }
     // COVERSEAL: tri alphabétique
-    return [...merged].sort((a, b) => compareAgentNames(a.name, b.name));
+    return sortAgentsByName(merged, (agent) => agent.name);
   }, [
     listedAgents,
     mine,

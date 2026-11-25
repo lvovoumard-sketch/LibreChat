@@ -6,11 +6,13 @@ import type { Endpoint, SelectedValues } from '~/common';
 import {
   useAgentDefaultPermissionLevel,
   useSelectorEffects,
+  useFavorites, // COVERSEAL: tri alphabétique
   useKeyDialog,
   useEndpoints,
   useLocalize,
 } from '~/hooks';
 import { useAgentsMapContext, useAssistantsMapContext, useLiveAnnouncer } from '~/Providers';
+import { sortAgentsByNameKeepingPinned } from '~/utils'; // COVERSEAL: tri alphabétique
 import { useGetEndpointsQuery, useListAgentsQuery } from '~/data-provider';
 import { useModelSelectorChatContext } from './ModelSelectorChatContext';
 import useSelectMention from '~/hooks/Input/useSelectMention';
@@ -90,9 +92,32 @@ export function ModelSelectorProvider({ children, startupConfig }: ModelSelector
     { requiredPermission: PermissionBits.VIEW },
     { select: selectAgents, enabled: agentsReady },
   );
+  const { favorites } = useFavorites(); // COVERSEAL: tri alphabétique
+  const pinnedAgentIds = useMemo(() => {
+    const ids = new Set<string>(); // COVERSEAL: tri alphabétique
+    for (const favorite of favorites) {
+      if (favorite.agentId) {
+        ids.add(favorite.agentId); // COVERSEAL: tri alphabétique
+      }
+    }
+    return ids;
+  }, [favorites]);
+  const agents = useMemo(() => {
+    const list = agentsQuery.data; // COVERSEAL: tri alphabétique
+    // COVERSEAL: tri alphabétique — pas de tri tant que le catalogue n'est pas entier.
+    if (list == null || agentsQuery.isComplete !== true) {
+      return list ?? null; // COVERSEAL: tri alphabétique
+    }
+    // COVERSEAL: tri alphabétique — la punaise garde sa place, le reste est trié.
+    return sortAgentsByNameKeepingPinned(
+      list,
+      (agent) => agent.name, // COVERSEAL: tri alphabétique
+      (agent) => pinnedAgentIds.has(agent.id), // COVERSEAL: tri alphabétique
+    );
+  }, [agentsQuery.data, agentsQuery.isComplete, pinnedAgentIds]);
 
   const { mappedEndpoints, endpointRequiresUserKey } = useEndpoints({
-    agents: agentsQuery.data ?? null,
+    agents, // COVERSEAL: tri alphabétique
     agentsQuery,
     assistantsMap,
     startupConfig,
