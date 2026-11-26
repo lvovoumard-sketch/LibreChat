@@ -25,6 +25,9 @@ html:not(.high-contrast) {
   --theme-menu-panel-radius: 16px !important;
   --theme-control-radius: 12px !important;
   --theme-large-surface-radius: 24px !important;
+  /* COVERSEAL: fond d'écran. Cream over the light photo, ink over the dark one. */
+  --cs-bg-veil-light: rgba(251, 249, 247, 0.55);
+  --cs-bg-veil-dark: rgba(29, 29, 27, 0.62);
 }
 
 html:not(.dark):not(.high-contrast) {
@@ -167,6 +170,7 @@ html:not(.dark):not(.high-contrast) {
   --cs-glass-highlight: rgba(255, 255, 255, 0.7);
   --cs-glass-shadow: rgba(29, 29, 27, 0.1);
   --cs-glass-tint: rgba(127, 53, 26, 0.12);
+  --cs-message-panel: rgba(251, 249, 247, 0.9);
 }
 
 html.dark:not(.high-contrast) {
@@ -306,6 +310,7 @@ html.dark:not(.high-contrast) {
   --cs-glass-highlight: rgba(251, 249, 247, 0.14);
   --cs-glass-shadow: rgba(0, 0, 0, 0.4);
   --cs-glass-tint: rgba(127, 53, 26, 0.34);
+  --cs-message-panel: rgba(29, 29, 27, 0.9);
 }
 
 /* COVERSEAL: DA — titles only. .split-parent is the welcome title. Code inside a title stays mono. */
@@ -340,6 +345,43 @@ html.dark:not(.high-contrast) body {
     rgb(var(--cs-gradient-end)) 100%
   );
   background-attachment: fixed;
+}
+
+/* COVERSEAL: fond d'écran. The gradient stays on the page. The photo is a separate
+   fixed layer, so a missing file leaves the gradient in place. position: fixed
+   stands in for background-attachment: fixed, which iOS scrolls incorrectly. */
+html:not(.high-contrast) body {
+  isolation: isolate;
+}
+
+html:not(.high-contrast) body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+html:not(.dark):not(.high-contrast) body::before {
+  background-image:
+    linear-gradient(var(--cs-bg-veil-light), var(--cs-bg-veil-light)),
+    url('/images/coverseal-bg-light.webp');
+}
+
+html.dark:not(.high-contrast) body::before {
+  background-image:
+    linear-gradient(var(--cs-bg-veil-dark), var(--cs-bg-veil-dark)),
+    url('/images/coverseal-bg-dark.webp');
+}
+
+/* COVERSEAL: fond d'écran. Message text gets its own panel; the welcome screen does not. */
+html:not(.high-contrast) [data-chat-pane] .scrollbar-gutter-stable {
+  background-color: var(--cs-message-panel);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
 }
 
 html:not(.high-contrast) :is(
@@ -425,6 +467,10 @@ html:not(.high-contrast) :is(
     background-color: var(--cs-glass-solid);
     box-shadow: inset 0 0 0 1px var(--cs-glass-border);
   }
+
+  html:not(.high-contrast) [data-chat-pane] .scrollbar-gutter-stable {
+    background-color: rgb(var(--page-canvas));
+  }
 }
 
 @media (prefers-reduced-transparency: reduce) {
@@ -441,5 +487,16 @@ html:not(.high-contrast) :is(
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
     box-shadow: inset 0 0 0 1px var(--cs-glass-border);
+  }
+
+  html:not(.high-contrast) {
+    --cs-bg-veil-light: rgba(251, 249, 247, 0.92);
+    --cs-bg-veil-dark: rgba(29, 29, 27, 0.92);
+  }
+
+  html:not(.high-contrast) [data-chat-pane] .scrollbar-gutter-stable {
+    background-color: rgb(var(--page-canvas));
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 }
