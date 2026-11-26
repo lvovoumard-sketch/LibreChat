@@ -1,4 +1,4 @@
-/* COVERSEAL: DA
+﻿/* COVERSEAL: DA
  * Coverseal palette, loaded after the stock styles. ThemeProvider writes the same
  * variables inline on <html>, so each override is !important or the stock theme
  * wins. High contrast is excluded. Values are bare R G B triplets, the form
@@ -368,13 +368,13 @@ html:not(.high-contrast) body::before {
 html:not(.dark):not(.high-contrast) body::before {
   background-image:
     linear-gradient(var(--cs-bg-veil-light), var(--cs-bg-veil-light)),
-    url('/images/coverseal-bg-light.webp');
+    url('/assets/bg/coverseal-bg-light.webp');
 }
 
 html.dark:not(.high-contrast) body::before {
   background-image:
     linear-gradient(var(--cs-bg-veil-dark), var(--cs-bg-veil-dark)),
-    url('/images/coverseal-bg-dark.webp');
+    url('/assets/bg/coverseal-bg-dark.webp');
 }
 
 /* COVERSEAL: fond d'écran. Message text gets its own panel; the welcome screen does not. */
