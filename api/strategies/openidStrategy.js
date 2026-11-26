@@ -19,6 +19,7 @@ const {
   getTokenCacheTtlMs,
   recordIdpRoleChange,
   applyOpenIDProfile,
+  resolveOpenIDName, // COVERSEAL: nom OpenID
   getAvatarSaveParams,
   isEmailDomainAllowed,
   getAvatarFileStrategy,
@@ -778,11 +779,20 @@ async function processOpenIDAuth(tokenset, existingUsersOnly = false) {
     throw new Error('User does not exist');
   }
 
+  // COVERSEAL: nom OpenID — replace only an empty name, the email, or the username.
+  const name = resolveOpenIDName({
+    stored: user?.name,
+    email,
+    username,
+    claims: userinfo,
+    fallback: fullName,
+  });
+
   const profile = {
     openidId: userinfo.sub,
     openidIssuer,
     username,
-    name: fullName,
+    name,
     email,
     emailVerified: userinfo.email_verified || false,
     idOnTheSource: userinfo.oid,

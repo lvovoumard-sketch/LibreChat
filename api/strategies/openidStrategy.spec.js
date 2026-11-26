@@ -433,7 +433,7 @@ describe('setupOpenId', () => {
         openidIssuer: 'https://fake-issuer.com',
         username: userinfo.preferred_username,
         email: userinfo.email,
-        name: `${userinfo.given_name} ${userinfo.family_name}`,
+        name: userinfo.name, // COVERSEAL: nom OpenID
       }),
       { enabled: false },
     );
@@ -494,13 +494,19 @@ describe('setupOpenId', () => {
   it('should set the full name correctly when given_name and family_name exist', async () => {
     // Arrange
     const userinfo = tokenset.claims();
-    const expectedFullName = `${userinfo.given_name} ${userinfo.family_name}`;
 
     // Act
     const { user } = await validate(tokenset);
 
-    // Assert
-    expect(user.name).toBe(expectedFullName);
+    // Assert — COVERSEAL: nom OpenID. The name claim wins over given_name + family_name.
+    expect(user.name).toBe(userinfo.name);
+  });
+
+  it('uses given and family name when the name claim is an email', async () => {
+    // COVERSEAL: nom OpenID
+    const userinfo = { ...tokenset.claims(), name: tokenset.claims().email };
+    const { user } = await validate({ ...tokenset, claims: () => userinfo });
+    expect(user.name).toBe(`${userinfo.given_name} ${userinfo.family_name}`);
   });
 
   it('should override full name with OPENID_NAME_CLAIM when set', async () => {
@@ -545,8 +551,45 @@ describe('setupOpenId', () => {
         openidId: userinfo.sub,
         openidIssuer: 'https://fake-issuer.com',
         username: userinfo.preferred_username,
-        name: `${userinfo.given_name} ${userinfo.family_name}`,
+        name: userinfo.name, // COVERSEAL: nom OpenID
       }),
+    );
+  });
+
+  it('replaces a stored email with the claim name and keeps a real name', async () => {
+    // COVERSEAL: nom OpenID
+    const userinfo = tokenset.claims();
+    const emailUser = {
+      _id: 'emailNameId',
+      provider: 'openid',
+      email: userinfo.email,
+      openidId: '',
+      username: '',
+      name: userinfo.email,
+    };
+    findUser.mockImplementation(async (query) => {
+      if (query.openidId === userinfo.sub || query.email === userinfo.email) {
+        return emailUser;
+      }
+      return null;
+    });
+    await validate(tokenset);
+    expect(updateUser).toHaveBeenCalledWith(
+      emailUser._id,
+      expect.objectContaining({ name: userinfo.name }),
+    );
+
+    const namedUser = { ...emailUser, _id: 'realNameId', name: 'Kept Name' };
+    findUser.mockImplementation(async (query) => {
+      if (query.openidId === userinfo.sub || query.email === userinfo.email) {
+        return namedUser;
+      }
+      return null;
+    });
+    await validate(tokenset);
+    expect(updateUser).toHaveBeenCalledWith(
+      namedUser._id,
+      expect.objectContaining({ name: 'Kept Name' }),
     );
   });
 
@@ -661,7 +704,7 @@ describe('setupOpenId', () => {
           email: tokenset.claims().email,
           emailVerified: true,
           username: tokenset.claims().preferred_username,
-          name: `${tokenset.claims().given_name} ${tokenset.claims().family_name}`,
+          name: tokenset.claims().name, // COVERSEAL: nom OpenID
         }),
       );
     });

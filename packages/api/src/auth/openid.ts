@@ -391,3 +391,59 @@ export async function createOpenIDUser({
     created: result.created,
   };
 }
+
+/** COVERSEAL: nom OpenID — claims used to repair a stored name that is empty or an address. */
+export type OpenIDNameClaims = {
+  name?: unknown;
+  given_name?: unknown;
+  family_name?: unknown;
+};
+
+const openIDClaimText = (value: unknown): string => (typeof value === 'string' ? value.trim() : '');
+
+const sameOpenIDText = (left: string, right: string | null | undefined): boolean => {
+  const other = openIDClaimText(right);
+  return other !== '' && left.localeCompare(other, undefined, { sensitivity: 'accent' }) === 0;
+};
+
+/**
+ * COVERSEAL: nom OpenID. `name` when it is not an email address, otherwise the given and family
+ * names. An address in the `name` claim is not a display name.
+ */
+export function openIDDisplayName(claims: OpenIDNameClaims): string {
+  const claim = openIDClaimText(claims.name);
+  const composed = [openIDClaimText(claims.given_name), openIDClaimText(claims.family_name)]
+    .filter((part) => part !== '')
+    .join(' ');
+  if (claim !== '' && !claim.includes('@')) {
+    return claim;
+  }
+  return composed || claim;
+}
+
+/**
+ * COVERSEAL: nom OpenID. Keeps a name that is already a display name. Replaces it only when it is
+ * empty or equal to the email or the username, so a later login can repair an address stored at
+ * signup without writing over a name the user set.
+ */
+export function resolveOpenIDName(input: {
+  stored?: string | null;
+  email?: string | null;
+  username?: string | null;
+  claims: OpenIDNameClaims;
+  fallback?: string | null;
+}): string {
+  const stored = openIDClaimText(input.stored);
+  if (
+    stored !== '' &&
+    !sameOpenIDText(stored, input.email) &&
+    !sameOpenIDText(stored, input.username)
+  ) {
+    return stored;
+  }
+  const display = openIDDisplayName(input.claims);
+  if (display !== '') {
+    return display;
+  }
+  return openIDClaimText(input.fallback) || stored;
+}
