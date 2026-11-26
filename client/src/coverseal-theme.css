@@ -20,6 +20,11 @@ html:not(.high-contrast) {
   --theme-display-font-family: var(--cs-font-titles) !important;
   --theme-dialog-title-font-family: var(--cs-font-titles) !important;
   font-family: var(--cs-font-ui);
+  --theme-menu-radius: 16px !important;
+  --theme-popover-radius: 16px !important;
+  --theme-menu-panel-radius: 16px !important;
+  --theme-control-radius: 12px !important;
+  --theme-large-surface-radius: 24px !important;
 }
 
 html:not(.dark):not(.high-contrast) {
@@ -155,6 +160,13 @@ html:not(.dark):not(.high-contrast) {
   --syntax-string: 86 93 98 !important;
   --syntax-builtin: 110 46 23 !important;
   --syntax-attr: 96 92 85 !important;
+
+  --cs-gradient-mid: 232 225 214;
+  --cs-glass: rgba(251, 249, 247, 0.78);
+  --cs-glass-border: rgba(220, 213, 201, 0.72);
+  --cs-glass-highlight: rgba(255, 255, 255, 0.7);
+  --cs-glass-shadow: rgba(29, 29, 27, 0.1);
+  --cs-glass-tint: rgba(127, 53, 26, 0.12);
 }
 
 html.dark:not(.high-contrast) {
@@ -286,6 +298,14 @@ html.dark:not(.high-contrast) {
   --syntax-string: 220 213 201 !important;
   --syntax-builtin: 234 153 123 !important;
   --syntax-attr: 225 138 107 !important;
+
+  --cs-gradient-end: 44 30 24;
+  --cs-gradient-mid: 36 28 24;
+  --cs-glass: rgba(29, 29, 27, 0.78);
+  --cs-glass-border: rgba(220, 213, 201, 0.22);
+  --cs-glass-highlight: rgba(251, 249, 247, 0.14);
+  --cs-glass-shadow: rgba(0, 0, 0, 0.4);
+  --cs-glass-tint: rgba(127, 53, 26, 0.34);
 }
 
 /* COVERSEAL: DA — titles only. .split-parent is the welcome title. Code inside a title stays mono. */
@@ -295,4 +315,131 @@ html:not(.high-contrast) :is(h1, h2, h3, .split-parent, .font-display, .font-the
 
 html:not(.high-contrast) :is(h1, h2, h3) :is(code, kbd, samp, pre) {
   font-family: var(--theme-mono-font-family);
+}
+
+/* Frosted chrome. Radii and layout stay on the theme tokens; this only paints. */
+html:not(.dark):not(.high-contrast),
+html:not(.dark):not(.high-contrast) body {
+  background-color: rgb(var(--page-canvas));
+  background-image: linear-gradient(
+    165deg,
+    rgb(var(--page-canvas)) 0%,
+    rgb(var(--cs-gradient-mid)) 52%,
+    rgb(var(--surface-sidebar)) 100%
+  );
+  background-attachment: fixed;
+}
+
+html.dark:not(.high-contrast),
+html.dark:not(.high-contrast) body {
+  background-color: rgb(var(--page-canvas));
+  background-image: linear-gradient(
+    165deg,
+    rgb(var(--page-canvas)) 0%,
+    rgb(var(--cs-gradient-mid)) 58%,
+    rgb(var(--cs-gradient-end)) 100%
+  );
+  background-attachment: fixed;
+}
+
+html:not(.high-contrast) :is(
+  .bg-surface-menu,
+  .bg-surface-popover,
+  .bg-surface-dialog,
+  .bg-surface-sidebar,
+  .bg-surface-composer,
+  button.bg-presentation,
+  [role='button'].bg-presentation
+) {
+  background-color: var(--cs-glass);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 var(--cs-glass-highlight),
+    inset 0 0 0 1px var(--cs-glass-border),
+    0 16px 40px var(--cs-glass-shadow);
+  transition:
+    background-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+html:not(.high-contrast) .bg-surface-menu {
+  --cs-glass-solid: rgb(var(--surface-menu));
+}
+html:not(.high-contrast) .bg-surface-popover {
+  --cs-glass-solid: rgb(var(--surface-popover));
+}
+html:not(.high-contrast) .bg-surface-dialog {
+  --cs-glass-solid: rgb(var(--surface-dialog));
+}
+html:not(.high-contrast) .bg-surface-sidebar {
+  --cs-glass-solid: rgb(var(--surface-sidebar));
+}
+html:not(.high-contrast) .bg-surface-composer {
+  --cs-glass-solid: rgb(var(--surface-composer));
+}
+html:not(.high-contrast) :is(button, [role='button']).bg-presentation {
+  --cs-glass-solid: rgb(var(--presentation));
+}
+
+html:not(.high-contrast) :is(
+  .bg-surface-sidebar .hover\:bg-surface-hover:hover,
+  .bg-surface-menu .hover\:bg-surface-hover:hover,
+  .bg-surface-popover .hover\:bg-surface-hover:hover,
+  .bg-surface-menu .bg-surface-active,
+  .bg-surface-popover .bg-surface-active,
+  .bg-surface-menu .hover\:bg-surface-active-alt:hover,
+  .bg-surface-popover .hover\:bg-surface-active-alt:hover,
+  .bg-surface-nav-selected,
+  .bg-surface-tab-selected,
+  :is(button, [role='button']).hover\:bg-surface-active-alt:hover
+) {
+  background-color: var(--cs-glass-tint);
+  border-radius: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:not(.high-contrast) :is(
+    .bg-surface-menu,
+    .bg-surface-popover,
+    .bg-surface-dialog,
+    .bg-surface-sidebar,
+    .bg-surface-composer,
+    button.bg-presentation,
+    [role='button'].bg-presentation
+  ) {
+    transition: none;
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  html:not(.high-contrast) :is(
+    .bg-surface-menu,
+    .bg-surface-popover,
+    .bg-surface-dialog,
+    .bg-surface-sidebar,
+    .bg-surface-composer,
+    button.bg-presentation,
+    [role='button'].bg-presentation
+  ) {
+    background-color: var(--cs-glass-solid);
+    box-shadow: inset 0 0 0 1px var(--cs-glass-border);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  html:not(.high-contrast) :is(
+    .bg-surface-menu,
+    .bg-surface-popover,
+    .bg-surface-dialog,
+    .bg-surface-sidebar,
+    .bg-surface-composer,
+    button.bg-presentation,
+    [role='button'].bg-presentation
+  ) {
+    background-color: var(--cs-glass-solid);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: inset 0 0 0 1px var(--cs-glass-border);
+  }
 }
